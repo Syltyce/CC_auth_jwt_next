@@ -9,12 +9,6 @@ export async function GET(request) {
   // 1. Récupérer "authorization" dans les "headers" et le stocker dans un variable "authHeader"
   const authHeader = request.headers.get("Authorization");
 
-  if (!authHeader) {
-    return NextResponse.json({ message: "Authorization header missing" }, { status: 401 });
-  }
-
-  console.log(authHeader);  // Vérifie ce qui est récupéré dans le header
-
   // 2. Récupérer le token dans le "authHeader"
   const token = authHeader.split(" ")[1]; // On s'attend à ce que le format soit "Bearer <token>"
 

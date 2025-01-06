@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 const SECRET_KEY = process.env.JWT_SECRET; 
 const REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET; 
 const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION;
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 
 export async function POST(request) {
   // 1. Récupérer le "refreshToken" de la requête
@@ -26,7 +27,7 @@ export async function POST(request) {
 
     // 4. Générer un nouveau token d'accès
     const newAccessToken = jwt.sign({ username: decoded.username }, SECRET_KEY, {
-      expiresIn: JWT_REFRESH_EXPIRATION,
+      expiresIn: JWT_EXPIRATION,
     });
 
     // 5. Renvoyer le nouveau token en réponse
