@@ -6,6 +6,8 @@ import jwt from "jsonwebtoken";
 // Récupération des clés depuis la variable d'environnement
 const SECRET_KEY = process.env.JWT_SECRET; 
 const REFRESH_SECRET_KEY = process.env.JWT_REFRESH_SECRET;
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
+const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION; 
 
 
 export async function POST(request) {
@@ -24,14 +26,14 @@ export async function POST(request) {
     const accessToken = jwt.sign(
       { username: mockUser.username }, // Payload avec les informations utilisateur
       SECRET_KEY, // Clé secrète pour signer le token
-      { expiresIn: "1h" } // Le token expire après 1 heure
+      { expiresIn: JWT_EXPIRATION } 
     );
 
     // 5. Génération du refresh token (module jsonwebtoken)
     const refreshToken = jwt.sign(
       { username: mockUser.username },
-      REFRESH_SECRET_KEY, // La même clé peut être utilisée ou une autre clé pour le refresh token
-      { expiresIn: "7d" } // Le refresh token expire après 7 jours
+      REFRESH_SECRET_KEY, // Clé pour le refresh token
+      { expiresIn: JWT_REFRESH_EXPIRATION } 
     );
 
     // 6. Envoi des tokens dans la réponse

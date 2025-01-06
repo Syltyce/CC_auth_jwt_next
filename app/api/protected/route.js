@@ -9,13 +9,19 @@ export async function GET(request) {
   // 1. Récupérer "authorization" dans les "headers" et le stocker dans un variable "authHeader"
   const authHeader = request.headers.get("Authorization");
 
-  // 2. Récupérer le token dans le "authHeader"
   if (!authHeader) {
-    // 3. S'il n'y a pas de token, renvoyer une erreur
-    return NextResponse.json({ message: "No token provided" }, { status: 401 });
+    return NextResponse.json({ message: "Authorization header missing" }, { status: 401 });
   }
 
+  console.log(authHeader);  // Vérifie ce qui est récupéré dans le header
+
+  // 2. Récupérer le token dans le "authHeader"
   const token = authHeader.split(" ")[1]; // On s'attend à ce que le format soit "Bearer <token>"
+
+  // 3. S'il n'y a pas de token, renvoyer une erreur
+  if (!token) {
+    return NextResponse.json({ message: "No token provided" }, { status: 401 });
+  }
 
   try {
     // 4. Vérifier le JWT
