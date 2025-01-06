@@ -28,7 +28,7 @@ export default function ProfilePage() {
         });
 
         // 6. Si la réponse n'est pas bonne, a un status 401, que "isRefreshing" est "false" et qu'on a bien un "refreshToken"
-        if (response.status === 401 && refreshToken && !isRefreshing) {
+        if (!response.ok && response.status === 401 && refreshToken && !isRefreshing) {
           // 7. Passer isRefreshing à "true"
           isRefreshing(true);
 
@@ -60,9 +60,7 @@ export default function ProfilePage() {
             isRefreshing(false);
 
             // 15. Déconnecter l'utilisateur
-            localStorage.removeItem("token");
-            localStorage.removeItem("refreshToken");
-            router.push("/login");
+            handleLogout();
           }
         } else if (response.ok) {
           // 16. Récupérer les données de la réponse
