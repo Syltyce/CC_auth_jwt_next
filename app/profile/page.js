@@ -28,9 +28,9 @@ export default function ProfilePage() {
         });
 
         // 6. Si la réponse n'est pas bonne, a un status 401, que "isRefreshing" est "false" et qu'on a bien un "refreshToken"
-        if (response.ok && response.status === 401 && refreshToken && !isRefreshing) {
+        if (!response.ok && response.status === 401 && refreshToken && !isRefreshing) {
           // 7. Passer isRefreshing à "true"
-          isRefreshing(true);
+          setIsRefreshing(true);
 
           // 8. Faire la requête vers "'/api/refresh"
           const refreshResponse = await fetch("/api/refresh", {
@@ -45,19 +45,19 @@ export default function ProfilePage() {
           if (refreshResponse.ok) {
             // 10. Récupérer le token dans la réponse
             const data = await refreshResponse.json();
-            const newToken = data.token;
+            const newToken = data.accessToken;
 
             // 11. Stocker ce token dans le localStorage
             localStorage.setItem("token", newToken);
 
             // 12. Passer isRefreshing à "false"
-            isRefreshing(false);
+            setIsRefreshing(false);
 
             // 13. Appeler la fonction "fetchProfile"
             fetchProfile();
           } else {
             // 14. Passer isRefreshing à "false"
-            isRefreshing(false);
+            setIsRefreshing(false);
 
             // 15. Déconnecter l'utilisateur
             handleLogout();
